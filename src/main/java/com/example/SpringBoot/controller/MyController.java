@@ -1,29 +1,31 @@
 package com.example.SpringBoot.controller;
 
-import com.example.SpringBoot.dao.CustomerDAO;
-import com.example.SpringBoot.entity.Customer;
+import com.example.SpringBoot.dao.EmployeeDAO;
+import com.example.SpringBoot.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MyController {
 
-    private final CustomerDAO customerDAO;
+    private final EmployeeDAO employeeDAO;
 
-    @GetMapping("/list-customers")
-    public String listCustomers(Model model) {
-        List<Customer> customerList = customerDAO.findAll();
+    @GetMapping("/list-employees")
+    public String listEmployees(Model model) {
+        List<Employee> employeeList = employeeDAO.findAll();
 
-        model.addAttribute("employees", customerList);
+        model.addAttribute("employees", employeeList);
 
         return "list-employees";
     }
@@ -32,9 +34,9 @@ public class MyController {
     public String showFormForAdd(Model theModel) {
 
         // create model attribute to bind form data
-        Customer theCustomer = new Customer();
+        Employee theEmployee = new Employee();
 
-        theModel.addAttribute("employee", theCustomer);
+        theModel.addAttribute("employee", theEmployee);
 
         return "employee-form";
     }
@@ -45,13 +47,18 @@ public class MyController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@ModelAttribute("employee") Customer theCustomer) {
+    public String saveEmployee(@Valid @ModelAttribute("employee") Employee theEmployee,
+                               BindingResult theBindingResult) {
 
-        // save the customer
-        customerDAO.save(theCustomer);
+        if (theBindingResult.hasErrors()) {
+            return "employee-form";
+        }
+        else {
+            // save the customer
+            employeeDAO.save(theEmployee);
 
-        // use a redirect to prevent duplicate submissions
-        return "redirect:/list-customers";
+            // use a redirect to prevent duplicate submissions
+            return "redirect:/list-employees";
+        }
     }
-
 }

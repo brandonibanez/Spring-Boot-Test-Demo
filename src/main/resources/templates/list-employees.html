@@ -19,9 +19,6 @@
 	<h3>Employee Directory</h3>
 	<hr>
 
-	<a th:href="@{/leaders}">Test</a>
-	<br>
-
 	Authenticated username:
 	<span sec:authentication="name"></span>
 	<br>
@@ -30,6 +27,14 @@
 	<br>
 
 	<div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+		This content is only shown to employees.
+	</div>
+
+	<div sec:authorize="hasRole('ROLE_MANAGER')">
+		This content is only shown to managers.
+	</div>
+
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
 		This content is only shown to administrators.
 	</div>
 

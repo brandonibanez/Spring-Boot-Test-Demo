@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @ToString
-public class CustomerErrorResponse {
+public class EmployeeErrorResponse {
     private int status;
     private String message;
     private long timeStamp;
