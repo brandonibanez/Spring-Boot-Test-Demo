@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Employee Directory</title>
+</head>
+
+<body>
+
+<div class="container">
+
+	<h3>Employee Directory</h3>
+	<hr>
+
+	<a th:href="@{/leaders}">Test</a>
+	<br>
+
+	Authenticated username:
+	<span sec:authentication="name"></span>
+	<br>
+	Authenticated role:
+	<span sec:authentication="principal.authorities"></span>
+	<br>
+
+	<div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+		This content is only shown to administrators.
+	</div>
+
+
+
+	<!-- Add a button -->
+	<a th:href="@{showFormForAdd}"
+		class="btn btn-primary btn-sm mb-3">
+		Add Employee
+	</a>
+
+	<form th:action="@{/logout}" method="post">
+		<p>
+			<input type="submit" value="Logout" class="btn btn-danger btn-sm mb-3" />
+		</p>
+	</form>
+	
+	
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempEmployee : ${employees}">
+			
+				<td th:text="${tempEmployee.first_name}" />
+				<td th:text="${tempEmployee.last_name}" />
+				<td th:text="${tempEmployee.email}" />	
+				
+			</tr>
+		</tbody>		
+	</table>
+	
+</div>
+	
+</body>
+</html>
+
+
+
